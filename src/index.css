@@ -1,0 +1,20 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+/* Form Properties */
+#FormRow {
+  margin-bottom: 25px;
+  margin-top: 25px;
+  border-bottom: 3px solid black;
+}
+
+
+/* Media Query To Adjust The Elements Of The Form */
+@media (max-width: 900px) {
+  #FormRow h2 {
+    text-align: center;
+  }
+}

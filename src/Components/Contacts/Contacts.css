@@ -1,0 +1,30 @@
+/* Card Properties */
+.card {
+    width: 22rem;
+    margin-bottom: 10px;
+    border: 1px solid black;
+    background-color: #eee9e9;
+    padding: 10px 15px 10px 15px;
+}
+
+/* Card Button Properties */
+.card button {
+    outline-style: none;
+    padding: 5px 10px;
+    outline: none;
+    border-style: none;
+    width: 100%;
+}
+
+/* Card Button Button Properties */
+.danger {
+    background-color: red;
+    color: white;
+}
+
+/* Media Query To Adjust The Elements Of The Form */
+@media (max-width: 900px) {
+ .card {
+     width: 100%;
+ }
+}

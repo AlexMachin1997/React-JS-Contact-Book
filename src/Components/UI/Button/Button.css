@@ -1,0 +1,19 @@
+.Button {
+    width: 20%;
+    padding: 10px;
+    margin: 0 0 0 10px;
+    border-radius: 30px;
+    border: 1px solid black;
+    background-color: lightgray;
+}
+
+/* Media Query To Adjust The Elements Of The Form */
+@media (max-width: 900px) {
+    .Button {
+        width: 97%;
+        padding: 5px;
+        margin: 0 0 10px 0;
+        position: relative;
+        left: 10px;
+    }
+}

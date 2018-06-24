@@ -1,0 +1,30 @@
+.Input {
+    width: 25%;
+    padding: 10px;
+}
+
+.InputElement {
+    outline: none;
+    border: 1px solid #ccc;
+    background-color: white;
+    font: inherit;
+    padding:10px;
+    border-radius: 30px;
+    width: 100%;
+    position: relative;
+    right: 10px;
+}
+
+/* Media Query To Adjust The Elements Of The Form */
+@media (max-width: 900px) {
+    .Input {
+        width: 100%;
+    }
+    
+    .InputElement {
+        position: static;
+        width:100%;
+        height: 50%;
+        margin: 0;        
+    }    
+}
