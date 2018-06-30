@@ -50,24 +50,35 @@ class App extends Component {
   }
 
 
-     //Get Request To Firebase, Then Set Ingredients Object TO Response.data 
-     componentDidMount () {
+  //Get Request To Firebase, Then Set Ingredients Object TO Response.data 
+  componentDidMount () {
 
       axios.get("/contact.json")
         
-      //After Sending A Request And The Response Is Recevied Update The Ingredient State From Null To The Responses Data
       .then(response => {
           this.setState({
               contactsArray: response.data
           })
-          console.log(response)
       })
+
+      .then(response => {
+        //Blank Array
+        const contactsArray = [];
+
+        for(let key in this.state.contactsArray) {
+          contactsArray.push({
+            id: key,
+            config: this.state.contactsArray[key]
+          });
+        }
+
+        console.log(contactsArray);    
+      })
+
 
       //Any Errors The Error State Is Set To True
       .catch (error => {
-          this.setState({
-              error: true
-          })
+      console.log(error)
       })
   }
 
@@ -77,6 +88,15 @@ class App extends Component {
     
       const formData = {};
      
+      /* 
+      for(let [temp variable] in this.state.contacts) {
+        formData[attach temp variable] = to contacts[temp variable].value
+      }
+      
+      */
+
+      // BASIC TERM: For everything in the contacts config set the formData (Blank Object) equal to the identifier e.g. name, street equal to the state value. The object will then be populated
+      // The formData is then attached to an object named object and sent to the firebase database by attaching it to the post request
       for(let formElementIdentifier in this.state.contacts) {
         formData[formElementIdentifier] = this.state.contacts[formElementIdentifier].value;
       }
@@ -98,6 +118,7 @@ class App extends Component {
       })
     }
 
+    
     //onChange handler accepts the event object which react uses and the inputIdentifier which is the object name e.g. name or street etc 
     inputChangedHandler = (event, inputIdentifier) => {
         
@@ -123,10 +144,12 @@ class App extends Component {
 
   render() {
 
+    console.log("Inside Render")
+     
     //Blank Array
     const formElementArray = [];
 
-      for(let key in this.state.contacts) {
+    for(let key in this.state.contacts) {
         formElementArray.push({
           id: key,
           config: this.state.contacts[key]
@@ -153,26 +176,33 @@ class App extends Component {
       </div>
     )
 
-    // let transformContacts = [];
+    const arrayOfComponents = [];
 
-    // for (const ingKey in this.state.contactsArray) {
-    //   for (let i = 0; i < this.state.contactsArray[ingKey]; i++) {
-    //     transformContacts.push(<Contacts key={ingKey + i} type={ingKey} />);
-    //   }
-    // }
+    for(let key in this.state.contactsArray) {
+      arrayOfComponents.push({
+          id: key,
+          config: this.state.contactsArray[key]
+      });
+    }
 
+    console.log(arrayOfComponents)
 
+    let contacts = (
+      <div>
+        <div className="row">
+          {arrayOfComponents.map(component => (
+           <Contacts key={component.id} component={component.config.persons} /> 
+          ))}
+        </div> 
+      </div>
+    )
 
- 
     return (
     <Aux>
       <Header ApplicationName={this.state.ApplicationName}/>
       <div className="container">
         {form}
-
-        <div className="row">
-
-        </div>      
+        {contacts}
       </div>
       </Aux>
     );
