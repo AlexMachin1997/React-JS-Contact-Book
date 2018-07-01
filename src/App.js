@@ -1,13 +1,11 @@
 //Imports For Project
 import React, { Component } from 'react'; // React
 
-import Contacts from "./Components/Contacts/Contacts"; //Contacts Component
-import Aux from "./HOC/Auxilary"; //Wrapper For Content (Generates Child Elements Within The Opening And Closing Tags)
+import Contacts from "./Components/Contact/Contacts/Contacts"; //Contacts Component
 import Header from "./Components/Header/Header"; // Header Component
 import axios from "./axios-instance";
 import Input from "./Components/UI/Input/Input";
 import Button from "./Components/UI/Button/Button";
-
 import IndexCSS from "./index.css";
 
 class App extends Component {
@@ -44,48 +42,18 @@ class App extends Component {
           value: ""
       },
     },
-    contactsArray: null, //Blank array which needs looping through
-    loading: false, //Will eventually get the spinner functionlaity working once the data can be fetched from the database
+    loading: false,
     ApplicationName : "React JS Phonebook" //Header Prop
   }
 
 
   //Get Request To Firebase, Then Set Ingredients Object TO Response.data 
-  componentDidMount () {
-
-      axios.get("/contact.json")
-        
-      .then(response => {
-          this.setState({
-              contactsArray: response.data
-          })
-      })
-
-      .then(response => {
-        //Blank Array
-        const contactsArray = [];
-
-        for(let key in this.state.contactsArray) {
-          contactsArray.push({
-            id: key,
-            config: this.state.contactsArray[key]
-          });
-        }
-
-        console.log(contactsArray);    
-      })
-
-
-      //Any Errors The Error State Is Set To True
-      .catch (error => {
-      console.log(error)
-      })
-  }
-
+ 
   addContact = (event) => {
 
       event.preventDefault(); //Prevents The Default Action Of A Form
     
+      
       const formData = {};
      
       /* 
@@ -143,8 +111,6 @@ class App extends Component {
     }
 
   render() {
-
-    console.log("Inside Render")
      
     //Blank Array
     const formElementArray = [];
@@ -176,39 +142,16 @@ class App extends Component {
       </div>
     )
 
-    const arrayOfComponents = [];
-
-    for(let key in this.state.contactsArray) {
-      arrayOfComponents.push({
-          id: key,
-          config: this.state.contactsArray[key]
-      });
-    }
-
-    console.log(arrayOfComponents)
-
-    let contacts = (
-      <div>
-        <div className="row">
-          {arrayOfComponents.map(component => (
-           <Contacts key={component.id} component={component.config.persons} /> 
-          ))}
-        </div> 
-      </div>
-    )
-
     return (
-    <Aux>
+    <React.Fragment>
       <Header ApplicationName={this.state.ApplicationName}/>
       <div className="container">
         {form}
-        {contacts}
+        <Contacts />
       </div>
-      </Aux>
+      </React.Fragment>
     );
   }
 }
 
 export default App;
-
-

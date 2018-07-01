@@ -25,6 +25,6 @@
 /* Media Query To Adjust The Elements Of The Form */
 @media (max-width: 900px) {
  .card {
-     width: 100%;
+     width: 99%;
  }
 }
