@@ -4,6 +4,11 @@ body {
   font-family: sans-serif;
 }
 
+* {
+  margin: 0;
+  padding: 0;
+}
+
 /* Form Properties */
 #FormRow {
   margin-bottom: 25px;

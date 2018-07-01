@@ -1,5 +1,4 @@
 import React, {Component} from "react"; //React 
-import axios from "../../../axios-instance";
 import Contact from "../Contact";
 import Spinner from "../../UI/Spinner/Spinner";
 
@@ -23,12 +22,17 @@ class Contacts extends Component {
     */
     componentDidMount () {
 
-        this.setState({loading: true})
+    this.setState({loading: true})
 
-        axios.get("/contact.json")
-            .then(response => { this.setState({contactsArray: response.data, loading: false})})
-                    
-            .catch (error => console.log(error))
+        fetch("https://address-book-database.firebaseio.com/contact.json")
+            .then(response => {
+                return response.json();
+            })
+
+            .then(json => {
+                console.log(json)
+                this.setState({contactsArray: json, loading: false})
+            })
     }
 
     /* 
@@ -48,7 +52,6 @@ class Contacts extends Component {
                 - email
     */
 
-
     render() {        
 
     let contactsArray = [];
@@ -63,17 +66,19 @@ class Contacts extends Component {
     let contacts = (
         
         <React.Fragment>
-        {contactsArray.map(component => (
-            <Contact 
-                key={component.id}
-                name={component.config.persons.name}
-                phone={component.config.persons.phone}
-                email={component.config.persons.email}
-            />
-        ))}
+            {contactsArray.map(component => (
+                <Contact 
+                    key={component.id}
+                    name={component.config.persons.name}
+                    phone={component.config.persons.phone}
+                    email={component.config.persons.email}
+                />
+            ))}
         </React.Fragment>
     )
 
+    //If True then make the contacts which returns a component a spinner
+    //Else dont
     if(this.state.loading){
         contacts = <Spinner />
     }

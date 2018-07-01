@@ -3,7 +3,6 @@ import React, { Component } from 'react'; // React
 
 import Contacts from "./Components/Contact/Contacts/Contacts"; //Contacts Component
 import Header from "./Components/Header/Header"; // Header Component
-import axios from "./axios-instance";
 import Input from "./Components/UI/Input/Input";
 import Button from "./Components/UI/Button/Button";
 import IndexCSS from "./index.css";
@@ -69,20 +68,17 @@ class App extends Component {
         formData[formElementIdentifier] = this.state.contacts[formElementIdentifier].value;
       }
       
-      const object = {
+      const data = {
         persons: formData
       }
-
-      axios.post("/contact.json", object)
-          
-      //After Sending A Request And The Response Is Recevied Update The Ingredient State From Null To The Responses Data
-      .then(response => {
-        console.log(response)
-      })
-
-      //Any Errors The Error State Is Set To True
-      .catch (error => {
-        console.log(error)
+      
+      fetch("https://address-book-database.firebaseio.com/contact.json", {
+        method: "POST",
+        headers : {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
       })
     }
 
