@@ -1,6 +1,5 @@
 //Imports For Project
 import React, { Component } from 'react'; // React
-
 import Contacts from "./Components/Contact/Contacts/Contacts"; //Contacts Component
 import Header from "./Components/Header/Header"; // Header Component
 import Input from "./Components/UI/Input/Input";
@@ -9,42 +8,68 @@ import IndexCSS from "./index.css";
 
 class App extends Component {
 
-  //Configuration for the input fields
-  //The contacts needs copying then the inner config needs copying like it has be done in the onChange event in the input field
-  state = {
-    contacts: {
-        name: {
+  constructor(props) {
+    super(props)
+    this.state = {
+      contacts: {
+          name: {
+              elementType: "input",
+              elementConfig: {
+                  type: "text",
+                  placeholder: "Persons Name *",
+                  required: true
+              },
+              value: ""
+          },
+          email: {
+            elementType: "input",
+            elementConfig: {
+                type: "email",
+                placeholder: " Email Address *",
+                required: true
+            },
+            value: ""
+          },
+          phone: {
             elementType: "input",
             elementConfig: {
                 type: "text",
-                placeholder: "Persons Name *",
+                placeholder: "Phone Number *",
                 required: true
             },
             value: ""
         },
-        email: {
-          elementType: "input",
-          elementConfig: {
-              type: "email",
-              placeholder: " Email Address *",
-              required: true
-          },
-          value: ""
-        },
-        phone: {
-          elementType: "input",
-          elementConfig: {
-              type: "text",
-              placeholder: "Phone Number *",
-              required: true
-          },
-          value: ""
       },
-    },
-    loading: false,
-    ApplicationName : "React JS Phonebook" //Header Prop
+      loading: false,
+      contactsArray: null,
+    }
   }
 
+
+    /* 
+    Component Did Mount Notes:
+    - Sends request to firebae via the axios instance
+        - The instance contains the baseURL, so the request is baseURL + post route which is contac.json
+    
+    - Then
+        - The contactsArray gets set to the response data from the axios call
+
+            - Any errors display it in the console
+    */
+   componentDidMount () {
+
+    this.setState({loading: true})
+
+        fetch("https://address-book-database.firebaseio.com/contact.json")
+            .then(response => {
+                return response.json();
+            })
+
+            .then(json => {
+                console.log(json)
+                this.setState({contactsArray: json, loading: false})
+            })
+    }
 
   //Get Request To Firebase, Then Set Ingredients Object TO Response.data 
  
@@ -79,6 +104,10 @@ class App extends Component {
           "Content-Type": "application/json"
         },
         body: JSON.stringify(data)
+      })
+      .then((res) => {
+        console.log("Response")
+        console.log(res)
       })
     }
 
@@ -138,12 +167,22 @@ class App extends Component {
       </div>
     )
 
+
+    let contactsArray = [];
+
+    for(let key in this.state.contactsArray) {
+        contactsArray.push({
+          id: key,
+          config: this.state.contactsArray[key]
+      });
+    }
+
     return (
     <React.Fragment>
-      <Header ApplicationName={this.state.ApplicationName}/>
+      <Header/>
       <div className="container">
         {form}
-        <Contacts />
+        <Contacts data={contactsArray} loading={this.state.loading} />
       </div>
       </React.Fragment>
     );

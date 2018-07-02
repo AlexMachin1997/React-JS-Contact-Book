@@ -2,38 +2,9 @@ import React, {Component} from "react"; //React
 import Contact from "../Contact";
 import Spinner from "../../UI/Spinner/Spinner";
 
-class Contacts extends Component {
+class Contacts extends Component {   
 
 
-    state = {
-        contactsArray: null,
-        loading: false
-    }
-
-    /* 
-    Component Did Mount Notes:
-    - Sends request to firebae via the axios instance
-        - The instance contains the baseURL, so the request is baseURL + post route which is contac.json
-    
-    - Then
-        - The contactsArray gets set to the response data from the axios call
-
-            - Any errors display it in the console
-    */
-    componentDidMount () {
-
-    this.setState({loading: true})
-
-        fetch("https://address-book-database.firebaseio.com/contact.json")
-            .then(response => {
-                return response.json();
-            })
-
-            .then(json => {
-                console.log(json)
-                this.setState({contactsArray: json, loading: false})
-            })
-    }
 
     /* 
     Render Notes:
@@ -52,34 +23,27 @@ class Contacts extends Component {
                 - email
     */
 
+
     render() {        
 
-    let contactsArray = [];
-
-    for(let key in this.state.contactsArray) {
-        contactsArray.push({
-          id: key,
-          config: this.state.contactsArray[key]
-      });
-    }
-   
     let contacts = (
         
         <React.Fragment>
-            {contactsArray.map(component => (
+            {this.props.data.map(component => (
                 <Contact 
-                    key={component.id}
-                    name={component.config.persons.name}
-                    phone={component.config.persons.phone}
-                    email={component.config.persons.email}
-                />
+                        key={component.id}
+                        name={component.config.persons.name}
+                        phone={component.config.persons.phone}
+                        email={component.config.persons.email}
+                    />
             ))}
         </React.Fragment>
-    )
+)
+
 
     //If True then make the contacts which returns a component a spinner
     //Else dont
-    if(this.state.loading){
+    if(this.props.loading){
         contacts = <Spinner />
     }
 
